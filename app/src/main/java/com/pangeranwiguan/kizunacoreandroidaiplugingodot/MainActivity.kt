@@ -2,32 +2,47 @@ package com.pangeranwiguan.kizunacoreandroidaiplugingodot
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.pangeranwiguan.kizunacoreandroidaiplugingodot.databinding.ActivityMainBinding
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    companion object {
+        init {
+            System.loadLibrary("kizunacoreandroidaiplugingodot") // Load the compiled .so file
+        }
+    }
+
+    // Declare the native methods
+    private external fun loadModel(modelPath: String): String
+    private external fun generateResponse(input: String): String
+    private external fun freeModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        // Copy the GGUF model from assets to internal storage
+        val assetManager = applicationContext.assets
+        val inputStream = assetManager.open("qwen2.5-0.5b-instruct-q4_k_m.gguf")
+        val outFile = File(filesDir, "qwen2.5-0.5b-instruct-q4_k_m.gguf")
+        outFile.outputStream().use { outputStream ->
+            inputStream.copyTo(outputStream)
+        }
 
-        // Example of a call to a native method
-        binding.sampleText.text = stringFromJNI()
+        // Load the GGUF model
+        val modelPath = outFile.absolutePath
+        val loadResult = loadModel(modelPath)
+        println(loadResult)
+
+        // Generate a response
+        val userMessage = "Hello! How can I assist you today?"
+        val aiResponse = generateResponse(userMessage)
+        println(aiResponse)
     }
 
-    /**
-     * A native method that is implemented by the 'kizunacoreandroidaiplugingodot' native library,
-     * which is packaged with this application.
-     */
-    private external fun stringFromJNI(): String
+    override fun onDestroy() {
+        super.onDestroy()
 
-    companion object {
-        // Used to load the 'kizunacoreandroidaiplugingodot' library on application startup.
-        init {
-            System.loadLibrary("kizunacoreandroidaiplugingodot")
-        }
+        // Free the model when the activity is destroyed
+        freeModel()
     }
 }

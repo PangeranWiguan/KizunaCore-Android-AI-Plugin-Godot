@@ -15,11 +15,28 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Configure externalNativeBuild using a method call
         externalNativeBuild {
             cmake {
-                cppFlags += "-std=c++17"
+
+                cppFlags.add("-std=c++17") // Use C++17 standard
+                arguments.add("-DANDROID_STL=c++_shared") // Use shared STL
+
             }
         }
+
+        // Configure ndk using a method call
+        ndk {
+            abiFilters.addAll(listOf("arm64-v8a", "armeabi-v7a", "x86", "x86_64")) // Add other ABIs as needed
+        }
+
+        sourceSets {
+            getByName("main") {
+                jniLibs.srcDirs("src/main/jniLibs")
+            }
+        }
+
     }
 
     buildTypes {

@@ -1,1 +1,4 @@
+CMake generate the build in this folder.
 app/build/intermediates/stripped_native_libs/debug/stripDebugDebugSymbols/out/lib
+
+I then move it to app/src/main/jnilibs
