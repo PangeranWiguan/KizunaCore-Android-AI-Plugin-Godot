@@ -31,3 +31,27 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Compiled files
+*.so
+*.dll
+*.exe
+
+# Build directories
+/build/
+/obj/
+/app/build/
+
+# IDE-specific files
+/local.properties
+
+# Godot-specific files
+.export_presets.godot
+.override.godot
+
+# Large model files
+/models/
+*.gguf
+
+# Temporary files
+*.tmp
