@@ -1,0 +1,1 @@
+app/build/intermediates/stripped_native_libs/debug/stripDebugDebugSymbols/out/lib
