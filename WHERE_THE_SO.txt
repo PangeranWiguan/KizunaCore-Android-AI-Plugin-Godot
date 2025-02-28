@@ -1,4 +1,11 @@
+Need to Clean and Rebuild the project to generate the .so file.
+
 CMake generate the build in this folder.
+
 app/build/intermediates/stripped_native_libs/debug/stripDebugDebugSymbols/out/lib
 
-I then move it to app/src/main/jnilibs
+OR
+
+app/build/intermediates/cxx/Debug/t5p6ewq5/obj
+
+I then move it to app/src/main/jniLibs
